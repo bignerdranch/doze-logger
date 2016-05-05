@@ -1,0 +1,26 @@
+*.iml
+.gradle
+/local.properties
+/.idea/workspace.xml
+/.idea/libraries
+.DS_Store
+/build
+/captures
+
+# Android
+*.apk
+*.ap_
+*.dex
+*.class
+bin/
+gen/
+*.log
+.navigation/
+gen-external-apklibs
+
+# IntelliJ
+.idea/
+*.ipr
+*.iws
+/out/
+.idea_modules/
