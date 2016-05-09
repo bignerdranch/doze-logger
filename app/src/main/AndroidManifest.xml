@@ -15,6 +15,19 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+
+        <service
+            android:name=".LoggingJobService"
+            android:permission="android.permission.BIND_JOB_SERVICE"/>
+
+        <receiver
+            android:enabled="true"
+            android:exported="true"
+            android:name=".DeviceIdleReceiver">
+            <intent-filter>
+                <action android:name="android.os.action.DEVICE_IDLE_MODE_CHANGED"/>
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

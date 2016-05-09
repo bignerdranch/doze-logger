@@ -3,14 +3,13 @@ package com.bigneranch.android.dozelogger;
 import android.content.Context;
 import android.util.Log;
 
-import com.google.common.base.Strings;
-
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class PermanentLoggerUtil {
@@ -26,7 +25,8 @@ public class PermanentLoggerUtil {
     synchronized private static void appendLine(Context context, String message) {
         try {
             OutputStreamWriter logFileOutputStreamWriter = new OutputStreamWriter(context.openFileOutput(LOG_FILE, Context.MODE_APPEND));
-            logFileOutputStreamWriter.write(message);
+            String timeString = new SimpleDateFormat("HH:mm:ss").format(new Date());
+            logFileOutputStreamWriter.write(timeString + ": " + message);
             logFileOutputStreamWriter.write('\n');
             logFileOutputStreamWriter.close();
         } catch (IOException e) {

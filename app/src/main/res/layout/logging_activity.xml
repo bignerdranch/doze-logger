@@ -7,15 +7,26 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:paddingBottom="@dimen/activity_vertical_margin"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin"
-        android:paddingTop="@dimen/activity_vertical_margin"
         tools:context="com.bigneranch.android.dozelogger.LoggingActivity">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recyclerView"
-            android:layout_height="match_parent"
-            android:layout_width="match_parent" />
+            android:layout_height="0dp"
+            android:layout_width="match_parent"
+            android:layout_weight="1"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <Button
+                android:id="@+id/jobSchedulerButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Start JS"/>
+            <Button
+                android:id="@+id/cancelAllButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Cancel All"/>
+        </LinearLayout>
     </LinearLayout>
 </layout>
