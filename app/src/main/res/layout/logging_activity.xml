@@ -22,34 +22,47 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Start JS"/>
+                android:text="10m repeating JS"/>
             <Button
-                android:id="@+id/alarmButton"
+                android:id="@+id/batteryJobSchedulerButton"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Start Alarm"/>
-            <Button
-                android:id="@+id/idleAlarmButton"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Start Idle Alarm"/>
+                android:text="Req Charge JS 10m min"/>
+
+
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <Button
+                android:id="@+id/alarmButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="10m repeating Alarm"/>
+            <Button
+                android:id="@+id/idleAlarmButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="15m Idle Alarm"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <Button
+                android:id="@+id/cancelAllButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Cancel All"/>
+            <Button
                 android:id="@+id/whitelistButton"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Whitelist"/>
-            <Button
-                android:id="@+id/cancelAllButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Cancel All"/>
+                android:text="Whitelist App"/>
         </LinearLayout>
     </LinearLayout>
 </layout>

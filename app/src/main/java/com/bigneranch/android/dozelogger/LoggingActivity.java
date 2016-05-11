@@ -63,14 +63,33 @@ public class LoggingActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 JobScheduler jobScheduler = (JobScheduler) getSystemService(Context.JOB_SCHEDULER_SERVICE);
-                jobScheduler.cancelAll();
-                PermanentLoggerUtil.logMessage(LoggingActivity.this, "Cancelling all jobscheduler jobs");
+                jobScheduler.cancel(1);
+                PermanentLoggerUtil.logMessage(LoggingActivity.this, "Cancelling recurring jobscheduler job");
                 ComponentName componentName = new ComponentName(LoggingActivity.this, LoggingJobService.class);
                 JobInfo jobInfo = new JobInfo.Builder(1, componentName)
-                        .setPeriodic(TimeUnit.MINUTES.toMillis(8))
+                        .setPeriodic(TimeUnit.MINUTES.toMillis(10))
                         .build();
 
                 PermanentLoggerUtil.logMessage(LoggingActivity.this, "Scheduling recurring job");
+                jobScheduler.schedule(jobInfo);
+                refreshLogs();
+            }
+        });
+
+        loggingActivityBinding.batteryJobSchedulerButton.setOnClickListener(new OnClickListener() {
+            @TargetApi(VERSION_CODES.LOLLIPOP)
+            @Override
+            public void onClick(View v) {
+                JobScheduler jobScheduler = (JobScheduler) getSystemService(Context.JOB_SCHEDULER_SERVICE);
+                jobScheduler.cancel(2);
+                PermanentLoggerUtil.logMessage(LoggingActivity.this, "Cancelling charging jobscheduler job");
+                ComponentName componentName = new ComponentName(LoggingActivity.this, LoggingJobService.class);
+                JobInfo jobInfo = new JobInfo.Builder(2, componentName)
+                        .setRequiresCharging(true)
+                        .setOverrideDeadline(TimeUnit.MINUTES.toMillis(10))
+                        .build();
+
+                PermanentLoggerUtil.logMessage(LoggingActivity.this, "Scheduling requiring charging job");
                 jobScheduler.schedule(jobInfo);
                 refreshLogs();
             }
@@ -98,7 +117,7 @@ public class LoggingActivity extends AppCompatActivity {
                 PendingIntent pendingIntent = LoggingAlarmService.getIdleAlarmIntent(LoggingActivity.this);
                 PermanentLoggerUtil.logMessage(LoggingActivity.this, "Scheduling exact and allow while idle Alarm");
                 alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP,
-                        System.currentTimeMillis() + TimeUnit.MINUTES.toMillis(10),
+                        System.currentTimeMillis() + TimeUnit.MINUTES.toMillis(15),
                         pendingIntent);
                 refreshLogs();
             }
@@ -128,6 +147,8 @@ public class LoggingActivity extends AppCompatActivity {
                 JobScheduler jobScheduler = (JobScheduler) getSystemService(Context.JOB_SCHEDULER_SERVICE);
                 jobScheduler.cancelAll();
                 PendingIntent pendingIntent = LoggingAlarmService.getNormalAlarmPendingIntent(LoggingActivity.this);
+                pendingIntent.cancel();
+                pendingIntent = LoggingAlarmService.getIdleAlarmIntent(LoggingActivity.this);
                 pendingIntent.cancel();
                 PermanentLoggerUtil.logMessage(LoggingActivity.this, "Cancelling all jobs");
                 refreshLogs();
