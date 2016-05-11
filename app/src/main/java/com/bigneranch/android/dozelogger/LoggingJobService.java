@@ -11,6 +11,7 @@ public class LoggingJobService extends JobService {
     @Override
     public boolean onStartJob(JobParameters params) {
         PermanentLoggerUtil.logMessage(this, "JobService onStartJob, jobId: " + params.getJobId());
+        PermanentLoggerUtil.logStatus(this);
         return false;
     }
 

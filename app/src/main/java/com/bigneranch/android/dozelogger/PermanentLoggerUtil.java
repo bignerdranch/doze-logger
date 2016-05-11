@@ -1,6 +1,11 @@
 package com.bigneranch.android.dozelogger;
 
+import android.annotation.TargetApi;
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.os.Build.VERSION_CODES;
+import android.os.PowerManager;
 import android.util.Log;
 
 import java.io.BufferedReader;
@@ -50,6 +55,32 @@ public class PermanentLoggerUtil {
         }
 
         return logs;
+    }
+
+    public static void logStatus(Context context) {
+        logMessage(context, getStatus(context));
+    }
+
+    @TargetApi(VERSION_CODES.LOLLIPOP)
+    public static String getStatus(Context context) {
+
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        boolean hasNetworkAccess = netInfo != null && netInfo.isConnectedOrConnecting();
+        boolean isAvailable = netInfo != null && netInfo.isAvailable();
+
+        String networkStatus = "Network connected: " + hasNetworkAccess + " Network available: " + isAvailable;
+
+
+
+        PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
+        boolean partialWake = pm.isWakeLockLevelSupported(PowerManager.PARTIAL_WAKE_LOCK);
+        String wakeLock = "Partial wakelock supported: " + partialWake;
+//        boolean screenDimWake = pm.isWakeLockLevelSupported(PowerManager.SCREEN_DIM_WAKE_LOCK);
+//        boolean screenBrightWake = pm.isWakeLockLevelSupported(PowerManager.SCREEN_BRIGHT_WAKE_LOCK);
+//        boolean fullWake = pm.isWakeLockLevelSupported(PowerManager.FULL_WAKE_LOCK);
+
+        return networkStatus + " " + wakeLock;
     }
 
 }
