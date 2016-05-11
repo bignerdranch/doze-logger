@@ -1,6 +1,8 @@
 package com.bigneranch.android.dozelogger;
 
 import android.annotation.TargetApi;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.app.job.JobInfo;
 import android.app.job.JobScheduler;
 import android.content.ComponentName;
@@ -59,14 +61,42 @@ public class LoggingActivity extends AppCompatActivity {
             public void onClick(View v) {
                 JobScheduler jobScheduler = (JobScheduler) getSystemService(Context.JOB_SCHEDULER_SERVICE);
                 jobScheduler.cancelAll();
-                PermanentLoggerUtil.logMessage(LoggingActivity.this, "cancelling all jobscheduler jobs");
+                PermanentLoggerUtil.logMessage(LoggingActivity.this, "Cancelling all jobscheduler jobs");
                 ComponentName componentName = new ComponentName(LoggingActivity.this, LoggingJobService.class);
                 JobInfo jobInfo = new JobInfo.Builder(1, componentName)
-                        .setPeriodic(TimeUnit.MINUTES.toMillis(10))
+                        .setPeriodic(TimeUnit.MINUTES.toMillis(8))
                         .build();
 
-                PermanentLoggerUtil.logMessage(LoggingActivity.this, "scheduling reccuring job");
+                PermanentLoggerUtil.logMessage(LoggingActivity.this, "Scheduling recurring job");
                 jobScheduler.schedule(jobInfo);
+                refreshLogs();
+            }
+        });
+
+        loggingActivityBinding.alarmButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+                PendingIntent pendingIntent = LoggingAlarmService.getNormalAlarmPendingIntent(LoggingActivity.this);
+                PermanentLoggerUtil.logMessage(LoggingActivity.this, "Scheduling normal repeating Alarm");
+                alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP,
+                        System.currentTimeMillis(),
+                        AlarmManager.INTERVAL_FIFTEEN_MINUTES,
+                        pendingIntent);
+                refreshLogs();
+            }
+        });
+
+        loggingActivityBinding.idleAlarmButton.setOnClickListener(new OnClickListener() {
+            @TargetApi(VERSION_CODES.M)
+            @Override
+            public void onClick(View v) {
+                AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+                PendingIntent pendingIntent = LoggingAlarmService.getIdleAlarmIntent(LoggingActivity.this);
+                PermanentLoggerUtil.logMessage(LoggingActivity.this, "Scheduling exact and allow while idle Alarm");
+                alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP,
+                        System.currentTimeMillis() + TimeUnit.MINUTES.toMillis(10),
+                        pendingIntent);
                 refreshLogs();
             }
         });
@@ -77,7 +107,9 @@ public class LoggingActivity extends AppCompatActivity {
             public void onClick(View v) {
                 JobScheduler jobScheduler = (JobScheduler) getSystemService(Context.JOB_SCHEDULER_SERVICE);
                 jobScheduler.cancelAll();
-                PermanentLoggerUtil.logMessage(LoggingActivity.this, "cancelling all jobs");
+                PendingIntent pendingIntent = LoggingAlarmService.getNormalAlarmPendingIntent(LoggingActivity.this);
+                pendingIntent.cancel();
+                PermanentLoggerUtil.logMessage(LoggingActivity.this, "Cancelling all jobs");
                 refreshLogs();
             }
         });
