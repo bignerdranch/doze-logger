@@ -132,6 +132,8 @@ public class LoggingActivity extends AppCompatActivity {
                     Intent intent = new Intent(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS);
                     startActivity(intent);
                 } else {
+                    // NOTE: as for Android-N Preview 4, changes made with this dialog require the
+                    // settings app to be force closed before it is displayed correctly in the battery optimizations page.
                     Intent intent = new Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
                     intent.setData(Uri.parse("package:" + getPackageName()));
                     startActivity(intent);
